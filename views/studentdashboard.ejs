@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnHub - Learn, Play, and Grow!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">🎓 LearnWithEase</div>
+            <ul class="nav-menu">
+                <li class="nav-item" onclick="showPage('home')">Home</li>
+                <li class="nav-item" onclick="showPage('courses')">Courses</li>
+                <li class="nav-item" onclick="showPage('profile')">Profile</li>
+                <li class="nav-item" onclick="showPage('leaderboard')">Leaderboard</li>
+                <li class="nav-item" onclick="alert('Support page coming soon!')">Support</li>
+            </ul>
+            <input type="text" class="search-bar" placeholder="Search topics..." onkeyup="searchTopics(this.value)">
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="bounce">Learn, Play, and Grow</h1>
+                <p>From Basics to Advanced - Your Journey Starts Here!</p>
+                <button class="btn pulse" onclick="scrollToClassSelection()">Start Learning</button>
+            </div>
+        </section>
+
+        <section id="class-selection-section" class="class-selection">
+            <div class="class-card" onclick="selectClass('kindergarten')">
+                <i class="fas fa-baby class-icon kindergarten"></i>
+                <h3>Kindergarten</h3>
+                <p>Fun learning with colors, shapes, and basic concepts</p>
+                <button class="btn">Explore</button>
+            </div>
+            <div class="class-card" onclick="selectClass('school')">
+                <i class="fas fa-graduation-cap class-icon school"></i>
+                <h3>School</h3>
+                <p>Comprehensive subjects from primary to high school</p>
+                <button class="btn">Explore</button>
+            </div>
+            <div class="class-card" onclick="selectClass('graduate')">
+                <i class="fas fa-university class-icon graduate"></i>
+                <h3>Graduate</h3>
+                <p>Advanced topics and professional skills</p>
+                <a href="course.html"><button class="btn">Explore</button></a>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="features-container">
+                <h2>Why Choose LearnWithEase?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-magic feature-icon animation-icon"></i>
+                        <h3>Interactive Animations</h3>
+                        <p>Learn complex concepts through engaging visual animations and interactive demonstrations.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-gamepad feature-icon game-icon"></i>
+                        <h3>Educational Games</h3>
+                        <p>Master skills through fun mini-games and challenges designed to reinforce learning.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-brain feature-icon quiz-icon"></i>
+                        <h3>Smart Quizzes</h3>
+                        <p>Test your knowledge with adaptive quizzes that adjust to your learning pace.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Course Selection Page -->
+    <div id="courses" class="page">
+        <div class="branch-selection">
+            <button class="back-btn" onclick="showPage('home')">← Back to Home</button>
+            <h1>Select Your Branch</h1>
+            <div class="branch-grid">
+                <div class="branch-card" onclick="selectBranch('cse')">
+                    <i class="fas fa-laptop-code" style="font-size: 2rem; color: #48dbfb; margin-bottom: 1rem;"></i>
+                    <h3>Computer Science</h3>
+                    <p>Programming, AI, Data Science</p>
+                </div>
+                <div class="branch-card" onclick="selectBranch('science')">
+                    <i class="fas fa-atom" style="font-size: 2rem; color: #ff6b6b; margin-bottom: 1rem;"></i>
+                    <h3>Science</h3>

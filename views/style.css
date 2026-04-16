@@ -1,0 +1,560 @@
+/* ============================================================
+   LearnWithEase — Theme CSS
+   Inspired by: soft lavender bg, white cards, blue accent panels
+   ============================================================ */
+
+/* ---------- CSS Variables ---------- */
+:root {
+  --bg-page:         #dce3f5;        /* soft lavender-blue page background */
+  --bg-card:         #ffffff;        /* white card surfaces */
+  --bg-input:        #eef0f5;        /* light gray input fields */
+  --bg-accent:       #6c7fdb;        /* medium cornflower-blue accent panels */
+  --bg-accent-hover: #5b6ecb;        /* darker blue on hover */
+  --bg-nav:          #ffffff;        /* white navbar */
+
+  --color-primary:   #6c7fdb;        /* primary blue (buttons, links) */
+  --color-primary-dark: #5b6ecb;
+  --color-text:      #1a1a2e;        /* near-black body text */
+  --color-text-muted:#6b7280;        /* muted/secondary text */
+  --color-text-white:#ffffff;        /* text on blue panels */
+  --color-text-hint: #9ca3af;        /* placeholder / hint text */
+
+  --radius-sm:       8px;
+  --radius-md:       14px;
+  --radius-lg:       24px;
+  --radius-blob:     60% 40% 55% 45% / 55% 45% 60% 40%; /* organic blob */
+
+  --shadow-card:     0 8px 32px rgba(108, 127, 219, 0.12);
+  --shadow-btn:      0 4px 14px rgba(108, 127, 219, 0.35);
+
+  --transition:      0.22s ease;
+}
+
+/* ---------- Reset & Base ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--color-text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ---------- Navbar ---------- */
+.navbar {
+  background: var(--bg-nav);
+  box-shadow: 0 1px 0 rgba(108, 127, 219, 0.12);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 2rem;
+  height: 64px;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.nav-item {
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.nav-item:hover {
+  background: var(--bg-input);
+  color: var(--color-primary);
+}
+
+.nav-item.active {
+  background: #eef1fb;
+  color: var(--color-primary);
+}
+
+.search-bar {
+  padding: 0.45rem 1rem;
+  border: 1.5px solid #dde1f0;
+  border-radius: 50px;
+  background: var(--bg-input);
+  font-size: 0.875rem;
+  color: var(--color-text);
+  outline: none;
+  width: 220px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.search-bar::placeholder {
+  color: var(--color-text-hint);
+}
+
+.search-bar:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(108, 127, 219, 0.15);
+}
+
+/* ---------- Pages ---------- */
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+/* ---------- Hero Section ---------- */
+.hero {
+  background: var(--bg-card);
+  margin: 2rem auto;
+  max-width: 1100px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 4rem 3rem;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Decorative blob in hero (mirrors the blue panel from the images) */
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  background: var(--bg-accent);
+  border-radius: var(--radius-blob);
+  right: -80px;
+  top: -80px;
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-content h1 {
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: var(--color-text);
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.hero-content p {
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  margin-bottom: 2rem;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-block;
+  padding: 0.65rem 1.8rem;
+  border-radius: 50px;
+  border: none;
+  background: var(--color-primary);
+  color: var(--color-text-white);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-btn);
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(108, 127, 219, 0.45);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+/* Outline variant (used on the blue panel — "Register" / "Login" buttons in images) */
+.btn-outline {
+  background: transparent;
+  color: var(--color-text-white);
+  border: 2px solid var(--color-text-white);
+  box-shadow: none;
+}
+
+.btn-outline:hover {
+  background: rgba(255,255,255,0.15);
+  box-shadow: none;
+}
+
+/* ---------- Class Selection Cards ---------- */
+.class-selection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto 2.5rem;
+  padding: 0 1rem;
+}
+
+.class-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Accent blob per card */
+.class-card::after {
+  content: '';
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  background: var(--bg-accent);
+  border-radius: 50%;
+  bottom: -70px;
+  right: -70px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.class-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(108, 127, 219, 0.2);
+}
+
+.class-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
+}
+
+.class-card p {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.class-icon {
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+}
+
+.class-icon.kindergarten { color: #f093fb; }
+.class-icon.school       { color: #6c7fdb; }
+.class-icon.graduate     { color: #43c6ac; }
+
+/* ---------- Features Section ---------- */
+.features {
+  background: var(--bg-accent);
+  padding: 4rem 1rem;
+  margin-top: 1rem;
+}
+
+.features-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.features-container h2 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--color-text-white);
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  backdrop-filter: blur(4px);
+  transition: background var(--transition), transform var(--transition);
+}
+
+.feature-card:hover {
+  background: rgba(255, 255, 255, 0.26);
+  transform: translateY(-3px);
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.animation-icon { color: #ffd6e7; }
+.game-icon      { color: #c7f9cc; }
+.quiz-icon      { color: #ffe8a1; }
+
+.feature-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-white);
+  margin-bottom: 0.5rem;
+}
+
+.feature-card p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.82);
+  line-height: 1.6;
+}
+
+/* ---------- Branch / Course Selection ---------- */
+.branch-selection {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.branch-selection h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.branch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.25rem;
+}
+
+.branch-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.branch-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(108, 127, 219, 0.18);
+}
+
+.branch-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.35rem;
+}
+
+.branch-card p {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* ---------- Back Button ---------- */
+.back-btn {
+  background: none;
+  border: 1.5px solid #dde1f0;
+  border-radius: 50px;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  transition: background var(--transition), color var(--transition);
+}
+
+.back-btn:hover {
+  background: var(--bg-input);
+  color: var(--color-primary);
+}
+
+/* ---------- Profile Page ---------- */
+.profile-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.profile-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 2.5rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Blue blob accent on profile card */
+.profile-card::before {
+  content: '';
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  background: var(--bg-accent);
+  border-radius: var(--radius-blob);
+  right: -100px;
+  top: -100px;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--bg-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-text-white);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Leaderboard ---------- */
+.leaderboard-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.leaderboard-item {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 12px rgba(108,127,219,0.08);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.leaderboard-item:hover {
+  box-shadow: var(--shadow-card);
+  transform: translateX(3px);
+}
+
+.rank-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-input);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.rank-badge.gold   { background: #fff4cc; color: #b8860b; }
+.rank-badge.silver { background: #f0f0f0; color: #666; }
+.rank-badge.bronze { background: #fdebd0; color: #9a5c20; }
+
+/* ---------- Input / Form elements ---------- */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  background: var(--bg-input);
+  border: 1.5px solid #dde1f0;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  color: var(--color-text);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-hint);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(108, 127, 219, 0.15);
+}
+
+/* ---------- Animations ---------- */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 4px 14px rgba(108,127,219,0.35); }
+  50%       { box-shadow: 0 6px 28px rgba(108,127,219,0.6); }
+}
+
+.bounce {
+  animation: bounce 2.5s ease-in-out infinite;
+}
+
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .nav-menu { display: none; }
+  .search-bar { width: 160px; }
+  .hero { padding: 2.5rem 1.5rem; }
+  .hero-content h1 { font-size: 1.8rem; }
+  .class-selection { grid-template-columns: 1fr; }
+}
