@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard – NeuronLearn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0b0f1a;
+      --surface: #111827;
+      --card: #161d2e;
+      --border: #1f2d47;
+      --accent: #00e5ff;
+      --accent2: #7c3aed;
+      --accent3: #f59e0b;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --danger: #ef4444;
+      --success: #10b981;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh;
+      z-index: 100;
+    }
+
+    .logo {
+      padding: 28px 24px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo-text {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+    .logo-sub { font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+
+    nav { padding: 20px 12px; flex: 1; }
+    .nav-section-title { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); padding: 0 12px 8px; }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 2px;
+      text-decoration: none;
+    }
+    .nav-item:hover { background: var(--border); color: var(--text); }
+    .nav-item.active { background: linear-gradient(135deg, rgba(0,229,255,0.15), rgba(124,58,237,0.1)); color: var(--accent); border: 1px solid rgba(0,229,255,0.2); }
+    .nav-icon { font-size: 18px; width: 22px; text-align: center; }
+    .nav-badge { margin-left: auto; background: var(--accent2); color: #fff; font-size: 10px; padding: 2px 7px; border-radius: 20px; }
+
+    .sidebar-user {
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--accent2), var(--accent)); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; }
+    .user-info .name { font-size: 14px; font-weight: 600; }
+    .user-info .role { font-size: 11px; color: var(--muted); }
+    .settings-btn { margin-left: auto; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 18px; transition: color 0.2s; }
+    .settings-btn:hover { color: var(--text); }
+
+    /* Main Content */
+    .main { margin-left: 260px; flex: 1; padding: 32px 36px; min-height: 100vh; }
+
+    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 36px; }
+    .page-title { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; }
+    .page-title span { color: var(--accent); }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .search-box {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 16px;
+    }
+    .search-box input { background: none; border: none; outline: none; color: var(--text); font-size: 14px; width: 200px; font-family: 'DM Sans', sans-serif; }
+    .search-box input::placeholder { color: var(--muted); }
+
+    .notif-btn {
+      width: 40px; height: 40px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 18px; position: relative;
+      transition: border-color 0.2s;
+    }
+    .notif-btn:hover { border-color: var(--accent); }
+    .notif-dot { position: absolute; top: 8px; right: 8px; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; border: 2px solid var(--bg); }
+
+    /* Stats Grid */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 28px; }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: default;
+    }
+    .stat-card:hover { border-color: rgba(0,229,255,0.3); transform: translateY(-2px); }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      opacity: 0.08;
+      background: var(--accent);
+      transform: translate(20px, -20px);
+    }
+    .stat-card.purple::before { background: var(--accent2); }
+    .stat-card.amber::before { background: var(--accent3); }
+    .stat-card.green::before { background: var(--success); }
+
+    .stat-icon { font-size: 22px; margin-bottom: 14px; }
+    .stat-value { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; line-height: 1; }
+    .stat-value.cyan { color: var(--accent); }
+    .stat-value.purple { color: var(--accent2); }
+    .stat-value.amber { color: var(--accent3); }
+    .stat-value.green { color: var(--success); }
+    .stat-label { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .stat-change { font-size: 11px; margin-top: 10px; }
+    .stat-change.up { color: var(--success); }
+    .stat-change.down { color: var(--danger); }
+
+    /* Content Grid */
+    .content-grid { display: grid; grid-template-columns: 1fr 360px; gap: 24px; }
+
+    /* Section headers */
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .section-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; }
+    .view-all { font-size: 13px; color: var(--accent); text-decoration: none; font-weight: 500; }
+    .view-all:hover { text-decoration: underline; }
+
+    /* Course Progress */
+    .courses-panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+    .course-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .course-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .course-icon { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .course-info { flex: 1; min-width: 0; }
+    .course-name { font-size: 14px; font-weight: 600; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .progress-bar { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+    .cyan-fill { background: linear-gradient(90deg, var(--accent2), var(--accent)); }
+    .purple-fill { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+    .green-fill { background: linear-gradient(90deg, var(--success), #34d399); }
+    .amber-fill { background: linear-gradient(90deg, #8b5cf6, #ec4899); }
+    .course-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
+    .progress-pct { font-size: 12px; color: var(--muted); }
+    .resume-btn {
+      font-size: 11px; font-weight: 600;
+      background: rgba(0,229,255,0.1); color: var(--accent);
+      border: 1px solid rgba(0,229,255,0.2);
+      border-radius: 6px; padding: 3px 10px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .resume-btn:hover { background: rgba(0,229,255,0.2); }
+
+    /* Right column */
+    .right-col { display: flex; flex-direction: column; gap: 24px; }
+
+    /* Streak Calendar */
+    .streak-panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+    .streak-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .streak-fire { font-size: 28px; }
+    .streak-count { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: var(--accent3); }
+    .streak-label { font-size: 12px; color: var(--muted); }
+
+    .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .day-dot { height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 3px; }
+    .day-dot span { font-size: 9px; color: var(--muted); }
+    .day-dot.done { background: linear-gradient(135deg, var(--accent3), #ef4444); }
+    .day-dot.done span { color: #fff; }
+    .day-dot.today { background: var(--border); border: 1px solid var(--accent); }
+    .day-dot.empty { background: var(--border); }
+
+    /* Leaderboard mini */
+    .leaderboard-panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+    .lb-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .lb-item:last-child { border-bottom: none; }
+    .lb-rank { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px; width: 24px; }
+    .lb-rank.gold { color: #fbbf24; }
+    .lb-rank.silver { color: #94a3b8; }
+    .lb-rank.bronze { color: #d97706; }
+    .lb-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--accent2), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+    .lb-name { flex: 1; font-size: 13px; font-weight: 500; }
+    .lb-xp { font-size: 12px; color: var(--accent3); font-weight: 600; }
+
+    /* Activity Feed */
+    .activity-panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-top: 24px; }
+    .activity-list { display: flex; flex-direction: column; gap: 0; }
+    .activity-item { display: flex; gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--border); position: relative; }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+    .activity-content .act-title { font-size: 13px; font-weight: 500; }
+    .activity-content .act-time { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .stat-card { animation: fadeUp 0.4s ease both; }
+    .stat-card:nth-child(1) { animation-delay: 0.05s; }
+    .stat-card:nth-child(2) { animation-delay: 0.1s; }
+    .stat-card:nth-child(3) { animation-delay: 0.15s; }
+    .stat-card:nth-child(4) { animation-delay: 0.2s; }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-text">NeuronLearn</div>
+    <div class="logo-sub">Smart Learning Platform</div>
+  </div>
+  <nav>
+    <div class="nav-section-title">Main</div>
+    <a href="/dashboard" class="nav-item active">
+      <span class="nav-icon">⬡</span> Dashboard
+    </a>
+    <a href="/courses" class="nav-item">
+      <span class="nav-icon">📚</span> Courses
+      <span class="nav-badge">12</span>
+    </a>
+    <a href="/leaderboard" class="nav-item">
+      <span class="nav-icon">🏆</span> Leaderboard
+    </a>
+    <a href="/practice" class="nav-item">
+      <span class="nav-icon">⚡</span> Practice
+    </a>
+    <div class="nav-section-title" style="margin-top:20px;">Account</div>
+    <a href="/profile" class="nav-item">
+      <span class="nav-icon">👤</span> Profile
+    </a>
+    <a href="/achievements" class="nav-item">
+      <span class="nav-icon">🎖️</span> Achievements
+    </a>
+    <a href="/settings" class="nav-item">
+      <span class="nav-icon">⚙️</span> Settings
+    </a>
+  </nav>
+  <div class="sidebar-user">
+    <div class="avatar"><%= user ? user.initials : 'AK' %></div>
+    <div class="user-info">
+      <div class="name"><%= user ? user.name : 'Arjun Kumar' %></div>
+      <div class="role">Pro Learner · Lvl <%= user ? user.level : 14 %></div>
+    </div>
+    <button class="settings-btn">⚙</button>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main">
+  <div class="topbar">
+    <div>
+      <div class="page-title">Good morning, <span><%= user ? user.firstName : 'Arjun' %> 👋</span></div>
+      <div style="font-size:13px; color:var(--muted); margin-top:4px;">You have 3 lessons due today. Keep the streak alive!</div>
+    </div>
+    <div class="topbar-right">
+      <div class="search-box">
+        <span style="color:var(--muted)">🔍</span>
+        <input type="text" placeholder="Search courses, topics..." />
+      </div>
+      <div class="notif-btn">🔔<div class="notif-dot"></div></div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📘</div>
+      <div class="stat-value cyan"><%= stats ? stats.coursesEnrolled : 8 %></div>
+      <div class="stat-label">Courses Enrolled</div>
+      <div class="stat-change up">↑ 2 this month</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-icon">⚡</div>
+      <div class="stat-value purple"><%= stats ? stats.xp : '4,820' %></div>
+      <div class="stat-label">XP Earned</div>
+      <div class="stat-change up">↑ 340 this week</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-icon">🔥</div>
+      <div class="stat-value amber"><%= stats ? stats.streak : 21 %></div>
+      <div class="stat-label">Day Streak</div>
+      <div class="stat-change up">Personal best!</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-icon">✅</div>
+      <div class="stat-value green"><%= stats ? stats.completed : 3 %></div>
+      <div class="stat-label">Completed</div>
+      <div class="stat-change up">↑ 1 this month</div>
+    </div>
+  </div>
+
+  <!-- Content Grid -->
+  <div class="content-grid">
+    <!-- Left: Course Progress -->
+    <div>
+      <div class="courses-panel">
+        <div class="section-header">
+          <div class="section-title">Continue Learning</div>
+          <a href="/courses" class="view-all">View all →</a>
+        </div>
+        <% const courses = activeCourses || [
+          { name: 'Machine Learning Fundamentals', icon: '🤖', bg: '#1a2744', pct: 72 },
+          { name: 'Advanced JavaScript & Node.js', icon: '💛', bg: '#1f1a10', pct: 45 },
+          { name: 'Data Structures & Algorithms', icon: '🌳', bg: '#0f1f1a', pct: 88 },
+          { name: 'UI/UX Design Principles', icon: '🎨', bg: '#1f101f', pct: 31 }
+        ]; %>
+        <% courses.forEach(function(c, i) { %>
+        <div class="course-item">
+          <div class="course-icon" style="background:<%= c.bg || '#1a2744' %>"><%= c.icon %></div>
+          <div class="course-info">
+            <div class="course-name"><%= c.name %></div>
+            <div class="progress-bar">
+              <div class="progress-fill <%= ['cyan-fill','purple-fill','green-fill','amber-fill'][i % 4] %>" style="width:<%= c.pct %>%"></div>
+            </div>
+            <div class="course-meta">
+              <span class="progress-pct"><%= c.pct %>% complete</span>
+              <button class="resume-btn">Resume →</button>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+
+      <!-- Activity Feed -->
+      <div class="activity-panel">
+        <div class="section-header">
+          <div class="section-title">Recent Activity</div>
+        </div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="activity-dot" style="background:#00e5ff"></div>
+            <div class="activity-content">
+              <div class="act-title">Completed Quiz: Neural Networks Basics</div>
+              <div class="act-time">2 hours ago · Score: 92%</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot" style="background:#7c3aed"></div>
+            <div class="activity-content">
+              <div class="act-title">Unlocked Badge: "Algorithm Ace"</div>
+              <div class="act-time">Yesterday · +50 XP</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot" style="background:#10b981"></div>
+            <div class="activity-content">
+              <div class="act-title">Finished Chapter 7 – Binary Trees</div>
+              <div class="act-time">2 days ago · 45 min session</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="activity-dot" style="background:#f59e0b"></div>
+            <div class="activity-content">
+              <div class="act-title">Enrolled in UI/UX Design Principles</div>
+              <div class="act-time">3 days ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-col">
+      <!-- Streak -->
+      <div class="streak-panel">
+        <div class="section-header" style="margin-bottom:12px;">
+          <div class="section-title">Daily Streak</div>
+        </div>
+        <div class="streak-header">
+          <div class="streak-fire">🔥</div>
+          <div>
+            <div class="streak-count"><%= stats ? stats.streak : 21 %> days</div>
+            <div class="streak-label">Keep it going!</div>
+          </div>
+        </div>
+        <div class="week-grid">
+          <% const days = ['M','T','W','T','F','S','S'];
+             const done = [true,true,true,true,true,false,false];
+          %>
+          <% days.forEach(function(d, i) { %>
+          <div class="day-dot <%= done[i] ? 'done' : (i===5 ? 'today' : 'empty') %>">
+            <span><%= d %></span>
+          </div>
+          <% }) %>
+        </div>
+        <div style="margin-top:14px; font-size:12px; color:var(--muted);">
+          🎯 Goal: 30-day streak · <span style="color:var(--accent3)">9 days left</span>
+        </div>
+      </div>
+
+      <!-- Mini Leaderboard -->
+      <div class="leaderboard-panel">
+        <div class="section-header">
+          <div class="section-title">Top Learners</div>
+          <a href="/leaderboard" class="view-all">Full board →</a>
+        </div>
+        <% const leaders = topLearners || [
+          { rank: '🥇', name: 'Priya S.', xp: '9,420', initials: 'PS' },
+          { rank: '🥈', name: 'Arjun K.', xp: '4,820', initials: 'AK' },
+          { rank: '🥉', name: 'Riya M.', xp: '4,110', initials: 'RM' },
+          { rank: '4', name: 'Dev T.', xp: '3,980', initials: 'DT' },
+          { rank: '5', name: 'Sneha P.', xp: '3,450', initials: 'SP' }
+        ]; %>
+        <% leaders.forEach(function(l, i) { %>
+        <div class="lb-item">
+          <div class="lb-rank <%= i===0?'gold':i===1?'silver':i===2?'bronze':'' %>"><%= l.rank %></div>
+          <div class="lb-avatar"><%= l.initials %></div>
+          <div class="lb-name <%= i===1 ? 'style="color:var(--accent)"' : '' %>"><%= l.name %> <%= i===1 ? '(You)' : '' %></div>
+          <div class="lb-xp"><%= l.xp %> XP</div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>
